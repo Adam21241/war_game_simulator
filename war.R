@@ -9,7 +9,7 @@ for (i in 1:52) {
 print(deck)
 
 # set seed (to get repetable results on other machine)
-set.seed(17)
+set.seed(91)
 
 # shuffling of the deck
 deck <- sample(deck)
@@ -22,7 +22,7 @@ print(player_1)
 print(player_2)
 
 # set max number of iterations, after which the winner is a player with bigger number of cards
-max_i = 10
+max_i = 1000
 
 # number of cards of player_1 in each iteration
 num_of_cards_1 <- c() 
@@ -43,11 +43,11 @@ while (i <= max_i) {
   print(length(player_2))
   cat("\n")
   
-  if (length(player_1) == 52) {
-    print(paste("The winner is player_1 after", i, "iterations."))
-    break
-  } else if (length(player_2) == 52) {
+  if (length(player_1) == 0) {
     print(paste("The winner is player_2 after", i, "iterations."))
+    break
+  } else if (length(player_2) == 0) {
+    print(paste("The winner is player_1 after", i, "iterations."))
     break
   }  
   
@@ -62,34 +62,34 @@ while (i <= max_i) {
     player_2[length(player_2) + 1] <- player_1[1]
     player_1 <- player_1[-1]
   } else {
+    temp_stack <- c(player_1[1], player_2[1])
+    player_1 <- player_1[-1]
+    player_2 <- player_2[-1]
     while (TRUE) {
-      temp_stack <- c()
       
-      if (length(player_1) <= 2) {
-        length(player_2) = 52
+      if (length(player_1) < 2) {
+        length(player_1) = 0
         break
       }
-      else if (length(player_2) <= 2) {
-        length(player_1) = 52
+      else if (length(player_2) < 2) {
+        length(player_2) = 0
         break
       }
       
-      temp_stack <- append(temp_stack, player_1[1:3])
-      temp_stack <- append(temp_stack, player_2[1:3])
+      temp_stack <- append(temp_stack, player_1[1:2])
+      temp_stack <- append(temp_stack, player_2[1:2])
       player_1 = player_1[-1 : -2]
       player_2 = player_2[-1 : -2]
       
-      if (temp_stack[3] > temp_stack[6]) {
+      if (temp_stack[length(temp_stack) - 2] > temp_stack[length(temp_stack)]) {
         player_1 <- append(player_1, temp_stack)
         break
       }
-      else if (temp_stack[6] > temp_stack[3]) {
+      else if (temp_stack[length(temp_stack)] > temp_stack[length(temp_stack) - 2]) {
         player_2 <- append(player_2, temp_stack)
         break
       }
     }
-    player_1 = player_1[-1]
-    player_2 = player_2[-1]
   }
   num_of_cards_1[i] <- length(player_1)
   i = i + 1
